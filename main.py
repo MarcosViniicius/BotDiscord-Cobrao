@@ -23,9 +23,8 @@ async def on_message(message):
         await message.channel.send('PASSA A MÃO NO OVÃO DO COBRÃO 🥚')
 
     if "ulto?" in message.content.lower():
-        sorteio = ['Sim', 'Não', 'será?', 'Você que escolhe!']
-        sim_nao = random.choice(sorteio)
-        await message.channel.send(sim_nao)
+        sorteio = random.choice(['Sim', 'Não', 'será?', 'Você que escolhe!'])
+        await message.channel.send(sorteio)
 
     await bot.process_commands(message)
 
@@ -90,5 +89,6 @@ def frase_sorteio():
     texto = ['Escolha', 'jogue de', 'vai jogar de', 'pegue', 'jogue com', ]
     frase = random.choice(texto)
     return frase.capitalize()
+
 
 bot.run('OTc1MTI1ODg1Njg0NDMyOTg2.GTNQRd.QMlydps9uYSKoWWbhwOXooY3u_-543YmHvEKw8')
