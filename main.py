@@ -91,12 +91,4 @@ def frase_sorteio():
     frase = random.choice(texto)
     return frase.capitalize()
 
-
-
-
-
-
-
-
-
 bot.run('OTc1MTI1ODg1Njg0NDMyOTg2.GTNQRd.QMlydps9uYSKoWWbhwOXooY3u_-543YmHvEKw8')
