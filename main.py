@@ -29,7 +29,7 @@ async def on_message(message):
     await bot.process_commands(message)
 
 
-@bot.command(name='ajuda')
+@bot.command(name='ajuda') 
 async def send_help(ctx):
     try:
         name = ctx.author.mention
