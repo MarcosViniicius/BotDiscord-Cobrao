@@ -5,12 +5,25 @@ import random
 
 bot = commands.Bot("c.", case_insensitive=True)
 prefix = ("c.")
-lista_comandos = ['c.ajuda', 'c.sorteio', 'c.calcular', 'c.ping', 'c.clear']
 
 @bot.event
 async def on_ready():
     print(f'Bot {bot.user} logado com sucesso!')
     print(f"ID do bot: {bot.user.id}")
+    channel = bot.get_channel(579794454244884514)
+    await channel.send('OOOOOPPPPPPPAAAAAAAAAAAA FUI INICIADOOOOOOOOOOOOO')
+
+@bot.event
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.MissingPermissions):
+        await ctx.send(f'{ctx.author.mention} Você não tem permissões suficientes para utilizar este comando.')
+        await ctx.message.delete()
+
+@bot.event
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.CommandNotFound):
+        await ctx.send(f'{ctx.author.mention} Este comando não existe em minha aplicação.')
+        await ctx.message.delete()
 
 @bot.event
 async def on_message(message):
@@ -75,9 +88,11 @@ async def sorteio(ctx, tipo_sorteio):
 @bot.command(name='clear')
 @commands.has_permissions(manage_messages=True)
 async def clear(ctx, amount=0):
+    try:
         await ctx.channel.purge(limit=amount)
         await ctx.send(f'{amount} mensagens foram excluidas desse canal de texto.')
-        
+    except:
+        await ctx.message.send('Você não tem permissão para utilizar esse comando.')
     
 @bot.command(name='ping')
 async def ping(ctx):
