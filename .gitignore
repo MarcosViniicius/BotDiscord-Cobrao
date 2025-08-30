@@ -1,1 +1,55 @@
-*__pycache__
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+.env
+.env*
+
+# VSCode
+.vscode/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Logs e arquivos temporários
+*.log
+*.sqlite3
+*.db
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# Dependências
+venv/
+.env/
+
+# Arquivos de configuração sensíveis
+*.secret
+*.key
+
+# Discord bot tokens e chaves
+*.token
+
+# Pasta de testes e relatórios
+htmlcov/
+coverage.xml
+*.cover
+
+# Outros
+*.idea/
+*.mypy_cache/
+*.pytest_cache/
+
+# Imagens geradas
+images/
+
+# Arquivos de build
+build/
+dist/
+*.egg-info/
+
+# Exemplo de ignorar arquivos de configuração
+config/settings_local.py
