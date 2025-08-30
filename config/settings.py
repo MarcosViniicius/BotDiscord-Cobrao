@@ -10,7 +10,7 @@ COMMAND_PREFIX = 'c.'
 # Configurações da OpenAI
 OPENAI_API_KEY = config('OPENAI_API_KEY')
 OPENAI_MODEL = 'gpt-4o'
-MAX_TOKENS = 500
+MAX_TOKENS = 800  # Reduzido para garantir que respostas fiquem dentro do limite do Discord
 
 # Configurações de respostas aleatórias
 DEFAULT_RANDOM_CHANCE = 0.05  # 5%
@@ -46,16 +46,6 @@ RANDOM_RESPONSES = [
 
 # Emojis para reações
 REACTION_EMOJIS = ["🐍", "👀", "🤔", "😂", "👍", "🔥", "✨", "🎯", "💭", "😉"]
-
-# Configurações de áudio/voz (REMOVIDO - Funcionalidades de voz desabilitadas)
-# VOICE_ENABLED = config('VOICE_ENABLED', default=True, cast=bool)  # Habilitado por padrão
-# VOICE_TIMEOUT = config('VOICE_TIMEOUT', default=300, cast=int)  # 5 minutos
-# AUDIO_SAMPLE_RATE = 24000  # Taxa de amostragem da OpenAI Realtime API
-# AUDIO_CHANNELS = 1  # Mono para Realtime API
-
-# Configurações OpenAI Realtime (REMOVIDO - Funcionalidades de voz desabilitadas)
-# OPENAI_REALTIME_MODEL = config('OPENAI_REALTIME_MODEL', default="gpt-4o-realtime-preview-2024-12-17")
-# OPENAI_VOICE = config('OPENAI_VOICE', default="alloy")  # Opções: alloy, ash, ballad, coral, echo, sage, shimmer, verse
 
 # Cores para embeds
 EMBED_COLORS = {

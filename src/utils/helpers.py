@@ -3,6 +3,7 @@ Funções utilitárias para o bot Cobrão
 """
 import random
 import asyncio
+import discord
 from config.settings import RANDOM_RESPONSES, REACTION_EMOJIS, RANDOM_COOLDOWN
 
 class RandomResponseManager:
@@ -86,3 +87,52 @@ def format_time(seconds):
         return f"{int(seconds/60)}m"
     else:
         return f"{int(seconds/3600)}h"
+
+async def send_temp_message(ctx_or_channel_or_message, embed, delete_after=8):
+    """
+    Envia uma mensagem temporária que se auto-deleta
+    Funciona com Context, Channel ou Message
+    """
+    try:
+        # Determina o destino baseado no tipo do objeto
+        if hasattr(ctx_or_channel_or_message, 'send'):
+            # É um Context ou Channel
+            message = await ctx_or_channel_or_message.send(embed=embed, delete_after=delete_after)
+        elif hasattr(ctx_or_channel_or_message, 'channel'):
+            # É uma Message
+            message = await ctx_or_channel_or_message.channel.send(embed=embed, delete_after=delete_after)
+        else:
+            # Fallback
+            return None
+        return message
+    except:
+        # Se não conseguir deletar automaticamente, tenta deletar manualmente após o tempo
+        try:
+            if hasattr(ctx_or_channel_or_message, 'send'):
+                message = await ctx_or_channel_or_message.send(embed=embed)
+            elif hasattr(ctx_or_channel_or_message, 'channel'):
+                message = await ctx_or_channel_or_message.channel.send(embed=embed)
+            else:
+                return None
+            
+            # Agendarar deleção manual
+            async def delete_later():
+                try:
+                    await asyncio.sleep(delete_after)
+                    await message.delete()
+                except:
+                    pass
+            
+            asyncio.create_task(delete_later())
+            return message
+        except:
+            # Se falhar tudo, apenas envia sem deletar
+            try:
+                if hasattr(ctx_or_channel_or_message, 'send'):
+                    return await ctx_or_channel_or_message.send(embed=embed)
+                elif hasattr(ctx_or_channel_or_message, 'channel'):
+                    return await ctx_or_channel_or_message.channel.send(embed=embed)
+                else:
+                    return None
+            except:
+                return None

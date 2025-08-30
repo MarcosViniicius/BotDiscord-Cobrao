@@ -19,62 +19,73 @@
 
 ## 🚀 Instalação Rápida
 
-### 1. Clonando o projeto
+1. **Clone o projeto:**
 
-```bash
-git clone <seu-repositorio>
-cd BotDiscord-Cobrao
-```
+   ```bash
+   git clone <seu-repositorio>
+   cd BotDiscord-Cobrao
+   ```
 
-### 2. Configurando ambiente
+2. **Instale as dependências:**
 
-```bash
-pip install -r requirements.txt
-```
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-### 3. Configuração do .env
+3. **Configure o .env:**
+   Crie um arquivo `.env` com:
 
-Crie um arquivo `.env`:
+   ```env
+   TOKEN_BOT=seu_token_do_discord_aqui
+   OPENAI_API_KEY=sua_chave_openai_aqui
+   ```
 
-```env
-TOKEN_BOT=seu_token_do_discord_aqui
-OPENAI_API_KEY=sua_chave_openai_aqui
-```
+4. **Habilite Intents no Discord:**
 
-### 4. Habilite Intents no Discord
+   - Acesse [Discord Developer Portal](https://discord.com/developers/applications/)
+   - Sua App → Bot → Privileged Gateway Intents
+   - Habilite **MESSAGE CONTENT INTENT**
 
-1. Acesse [Discord Developer Portal](https://discord.com/developers/applications/)
-2. Sua App → Bot → Privileged Gateway Intents
-3. Habilite **MESSAGE CONTENT INTENT**
+5. **Execute o bot:**
 
-### 5. Executando localmente
+   ```bash
+   python main.py
+   ```
 
-```bash
-python main.py
-```
-
-### 6. Executando com Docker
-
-```bash
-docker compose up --build
-```
+6. **Docker (opcional):**
+   ```bash
+   docker compose up --build
+   ```
 
 ---
 
 ## 📋 Comandos Principais
 
-| Comando                 | Função                         |
-| ----------------------- | ------------------------------ |
-| `@Cobrão <mensagem>`    | Converse com IA por texto      |
-| `c.ajuda`               | Lista todos os comandos        |
-| `c.status`              | Informações do bot             |
-| `c.ping`                | Latência do bot                |
-| `c.sorteio`             | Sorteio interativo             |
-| `c.calcular <exp>`      | Calculadora                    |
-| `c.clear <quantidade>`  | Limpa mensagens                |
-| `c.reset`               | Limpa contexto de conversa     |
-| `c.aleatorio <0.0-1.0>` | Configura respostas aleatórias |
-| `c.debug`               | Informações técnicas           |
+| Comando                         | Função                         |
+| ------------------------------- | ------------------------------ |
+| `@Cobrão <mensagem>`            | Converse com IA por texto      |
+| `c.ajuda`                       | Lista todos os comandos        |
+| `c.status`                      | Informações do bot             |
+| `c.ping`                        | Latência do bot                |
+| `c.sorteio`                     | Sorteio interativo             |
+| `c.calcular <exp>`              | Calculadora                    |
+| `c.clear <quantidade>`          | Limpa mensagens                |
+| `c.reset`                       | Limpa contexto de conversa     |
+| `c.aleatorio <0.0-1.0>`         | Configura respostas aleatórias |
+| `c.debug`                       | Informações técnicas           |
+| `c.meme`                        | Meme aleatório                 |
+| `c.piada`                       | Piada aleatória                |
+| `c.tempo <cidade>`              | Previsão do tempo              |
+| `c.traduzir <idioma> <texto>`   | Traduz texto básico            |
+| `c.dado [lados]`                | Rola um dado                   |
+| `c.moeda`                       | Joga uma moeda                 |
+| `c.8ball <pergunta>`            | Bola 8 mágica                  |
+| `c.ppt <escolha>`               | Pedra, papel ou tesoura        |
+| `c.avatar [@user]`              | Mostra avatar do usuário       |
+| `c.userinfo [@user]`            | Info de usuário                |
+| `c.serverinfo`                  | Info do servidor               |
+| `c.escolher pizza, salada, ...` | Escolha aleatória              |
+| `c.contador <texto>`            | Conta palavras/caracteres      |
 
 ---
 
@@ -92,13 +103,22 @@ Você pode customizar variáveis no `.env` e montar volumes para desenvolvimento
 
 ## 🛠 Tecnologias
 
-- [Python 3.11+](https://www.python.org/)
-- [Discord.py 2.4.0](https://discordpy.readthedocs.io/)
-- [OpenAI API](https://platform.openai.com/)
+- Python 3.11+
+- Discord.py 2.4.0
+- OpenAI API
 - AsyncIO
 - Docker
 
 ---
+
+## 🧹 Estrutura do Projeto
+
+- `main.py` — ponto de entrada único do bot
+- `src/cogs/` — comandos organizados por temas (core, utils, games, help)
+- `config/` — configurações e logging
+- `.env.example` — modelo para variáveis de ambiente
+- `requirements.txt` — dependências essenciais
+- `Dockerfile` e `docker-compose.yml` — para uso com Docker
 
 ## 🤝 Suporte & Contribuição
 

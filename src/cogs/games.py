@@ -1,61 +1,90 @@
+"""
+Cog de sorteios e jogos
+"""
 from discord.ext import commands
 import random
 
 class Sorteio(commands.Cog):
-    """Work with sorted champion"""
-
+    """Comandos de sorteio para jogos"""
 
     def __init__(self, bot):
         self.bot = bot
     
-    @commands.command(name='sorteio', help='sorteio de jogos. [sorteios disponíveis: lol, valorant, armas(valorant)]')
-    async def sorteio(self, ctx, tipo_sorteio):
-        if tipo_sorteio == 'lol':
-            name = ctx.author.mention
-
-            response = f'{name}, {frase_sorteio()} {sorteio_lol()} {emoji_sorteio()}'
-            await ctx.channel.send(response)
-
-        elif tipo_sorteio == 'valorant':
-            name = ctx.author.mention
-
-            response = f'{name}, {frase_sorteio()} {sorteio_vava()} {emoji_sorteio()}'
-            await ctx.channel.send(response)
-
-        elif tipo_sorteio == 'armas':
-            name = ctx.author.mention
-
-            response = f'{name}, você irá jogar de {sorteio_vava_armas()} neste round.'
-            await ctx.channel.send(response)
-
+    @commands.command(name='sorteio', help='Sorteio de jogos. Opções: lol, valorant, armas')
+    async def sorteio(self, ctx, tipo_sorteio=None):
+        if not tipo_sorteio:
+            await ctx.channel.send("Escolha um tipo de sorteio: **lol**, **valorant** ou **armas**\nExemplo: `c.sorteio lol`")
+            return
+            
+        name = ctx.author.mention
+        
+        if tipo_sorteio.lower() == 'lol':
+            response = f'{name}, {self._frase_sorteio()} {self._sorteio_lol()} {self._emoji_sorteio()}'
+        elif tipo_sorteio.lower() == 'valorant':
+            response = f'{name}, {self._frase_sorteio()} {self._sorteio_valorant()} {self._emoji_sorteio()}'
+        elif tipo_sorteio.lower() == 'armas':
+            response = f'{name}, você irá jogar de {self._sorteio_armas_valorant()} neste round.'
         else:
-            await ctx.channel.send(f'Não existe nenhum sorteio de **{tipo_sorteio}.**\nConfira o comando **c.ajuda** para ver os sorteios disponíveis.')
+            response = f'Não existe sorteio de **{tipo_sorteio}**.\nOpções disponíveis: **lol**, **valorant**, **armas**'
 
+        await ctx.channel.send(response)
 
-def sorteio_lol(): 
-    campeoes = ['Ahri', 'Akali', 'akshan', 'amumu','alistar', 'anivia', 'annie', 'aphelios', 'ashe', 'aurelion sol', 'aatrox', 'azir', 'bardo', 'blitzcrank', 'brand', 'braum', 'caitlyn', 'camille', 'cassiopeia', 'cho gath', 'corki', 'darius', 'diana', 'dr mundo', 'draven', 'ekko', 'elise', 'evelynn', 'ezreal', 'fiddle', 'galio', 'fiora', 'fizz', 'gangplank', 'garen', 'gnar', 'gragas', 'graves', 'gwen', 'hecarim', 'heimerdinger', 'illaoi', 'irelia', 'JANNA', 'jarvan', 'jax', 'jayce', 'jhin', 'jinx', 'kaisa', 'kalista', 'karma', 'karthus', 'kassadin', 'katarina', 'kayle', 'kayn', 'kennen', 'kha zix', 'kindred', 'kled', 'kog maw', 'le blanc', 'lee sin', 'leona', 'lilian', 'lissandra', 'lucian', 'lulu', 'lux', 'malphite', 'malzahar','maokai', 'master yi', 'miss fortune', 'mordekaiser', 'morgana', 'nami', 'nasus', 'nautilus', 'neeko', 'nidalee', 'nocturne', 'nunu e willump', 'olaf', 'orianna', 'ornn', 'pantheon', 'poppy', 'pyke', 'qiyana', 'quinn', 'rakan', 'ranmus', 'rek sai', 'rell', 'renata glasc', 'renekton', 'rengar', 'riven', 'rumble', 'ryze', 'samira', 'sejuani', 'senna', 'seraphine','sett', 'shaco', 'shen', 'shyvana','singed','sion', 'sivir ','skarner', 'sona', 'soraka', 'swain', 'sylas', 'syndra', 'tahm kench', 'taliyah', 'talon', 'taric', 'teemo', 'thresh', 'tristana', 'trundle', 'tryndamere', 'twisted fate', 'twitch', 'udyr', 'urgot', 'varus', 'vayne', 'veigar', 'vel koz', 'vex', 'VI', 'viego', 'viktor', 'vladmir', 'voliber', 'warwick', 'wukong', 'xayah', 'xerath', 'xin zhao', 'yasuo', 'yone','yorick', 'yuumi', 'zac', 'zed', 'zeri', 'ziggs', 'zilean', 'zoe', 'zyra']
-    sorteio = random.choice(campeoes)
-    return sorteio.capitalize()
+    def _sorteio_lol(self): 
+        """Sorteia um campeão do League of Legends"""
+        campeoes = [
+            'Ahri', 'Akali', 'Akshan', 'Amumu', 'Alistar', 'Anivia', 'Annie', 'Aphelios', 'Ashe', 
+            'Aurelion Sol', 'Aatrox', 'Azir', 'Bardo', 'Blitzcrank', 'Brand', 'Braum', 'Caitlyn', 
+            'Camille', 'Cassiopeia', 'Cho Gath', 'Corki', 'Darius', 'Diana', 'Dr Mundo', 'Draven', 
+            'Ekko', 'Elise', 'Evelynn', 'Ezreal', 'Fiddlesticks', 'Fiora', 'Fizz', 'Galio', 'Gangplank', 
+            'Garen', 'Gnar', 'Gragas', 'Graves', 'Gwen', 'Hecarim', 'Heimerdinger', 'Illaoi', 'Irelia', 
+            'Janna', 'Jarvan IV', 'Jax', 'Jayce', 'Jhin', 'Jinx', 'Kai Sa', 'Kalista', 'Karma', 'Karthus', 
+            'Kassadin', 'Katarina', 'Kayle', 'Kayn', 'Kennen', 'Kha Zix', 'Kindred', 'Kled', 'Kog Maw', 
+            'LeBlanc', 'Lee Sin', 'Leona', 'Lillia', 'Lissandra', 'Lucian', 'Lulu', 'Lux', 'Malphite', 
+            'Malzahar', 'Maokai', 'Master Yi', 'Miss Fortune', 'Mordekaiser', 'Morgana', 'Nami', 'Nasus', 
+            'Nautilus', 'Neeko', 'Nidalee', 'Nocturne', 'Nunu', 'Olaf', 'Orianna', 'Ornn', 'Pantheon', 
+            'Poppy', 'Pyke', 'Qiyana', 'Quinn', 'Rakan', 'Rammus', 'Rek Sai', 'Rell', 'Renata Glasc', 
+            'Renekton', 'Rengar', 'Riven', 'Rumble', 'Ryze', 'Samira', 'Sejuani', 'Senna', 'Seraphine', 
+            'Sett', 'Shaco', 'Shen', 'Shyvana', 'Singed', 'Sion', 'Sivir', 'Skarner', 'Sona', 'Soraka', 
+            'Swain', 'Sylas', 'Syndra', 'Tahm Kench', 'Taliyah', 'Talon', 'Taric', 'Teemo', 'Thresh', 
+            'Tristana', 'Trundle', 'Tryndamere', 'Twisted Fate', 'Twitch', 'Udyr', 'Urgot', 'Varus', 
+            'Vayne', 'Veigar', 'Vel Koz', 'Vex', 'Vi', 'Viego', 'Viktor', 'Vladimir', 'Volibear', 
+            'Warwick', 'Wukong', 'Xayah', 'Xerath', 'Xin Zhao', 'Yasuo', 'Yone', 'Yorick', 'Yuumi', 
+            'Zac', 'Zed', 'Zeri', 'Ziggs', 'Zilean', 'Zoe', 'Zyra'
+        ]
+        return random.choice(campeoes)
 
-def sorteio_vava():
-    agentes = ['Brimstone', 'Phoenix', 'Sage', 'Neon', 'Sova', 'Viper', 'Chypher', 'Reyna','Killjoy', 'Breach', 'Omen', 'Jett', 'Raze', 'Skye', 'Yoru', 'Astra', 'Kay/o', 'Chamber', 'Fade', 'Omen']
-    sorteio = random.choice(agentes)
-    return sorteio.capitalize()
+    def _sorteio_valorant(self):
+        """Sorteia um agente do Valorant"""
+        agentes = [
+            'Brimstone', 'Phoenix', 'Sage', 'Neon', 'Sova', 'Viper', 'Cypher', 'Reyna',
+            'Killjoy', 'Breach', 'Omen', 'Jett', 'Raze', 'Skye', 'Yoru', 'Astra', 
+            'Kay/O', 'Chamber', 'Fade', 'Harbor', 'Gekko', 'Deadlock', 'Iso', 'Clove'
+        ]
+        return random.choice(agentes)
 
-def sorteio_vava_armas():
-    armas = ['Stinger', 'Spectre', 'Bucky', 'Judge', 'Bulldog', 'Guardian', 'Phantom', 'Vandal', 'Marshal', 'Operator', 'Ares', 'Odin', 'Classic', 'Shorty', 'Frenzy', 'Ghost', 'Sheriff']
-    sorteio = random.choice(armas)
-    return sorteio.capitalize()
+    def _sorteio_armas_valorant(self):
+        """Sorteia uma arma do Valorant"""
+        armas = [
+            'Stinger', 'Spectre', 'Bucky', 'Judge', 'Bulldog', 'Guardian', 
+            'Phantom', 'Vandal', 'Marshal', 'Operator', 'Ares', 'Odin', 
+            'Classic', 'Shorty', 'Frenzy', 'Ghost', 'Sheriff'
+        ]
+        return random.choice(armas)
 
-def emoji_sorteio():
-    emoji = ['🤣','😂','😄','😅','😆','😍','😎','😋','😯','😪','😫','🙄','😏','😣','😥','😮','😛','😌','😴','🥱','🤑','😲','😰','😱','😳','😵','🤬','😡','😠','👿','👿','😈','👹','👺','💩','💀','☠']
-    emoji_sorteio = random.choice(emoji)
-    return emoji_sorteio.capitalize()
+    def _emoji_sorteio(self):
+        """Retorna um emoji aleatório"""
+        emojis = [
+            '🤣', '😂', '😄', '😅', '😆', '😍', '😎', '😋', '😯', '😪',
+            '😫', '🙄', '😏', '😣', '😥', '😮', '😛', '😌', '😴', '🥱',
+            '🤑', '😲', '😰', '😱', '😳', '😵', '🤬', '😡', '😠', '👿',
+            '😈', '👹', '👺', '💩', '💀', '☠'
+        ]
+        return random.choice(emojis)
 
-def frase_sorteio():
-    texto = ['Escolha', 'jogue de', 'vai jogar de', 'pegue', 'jogue com', ]
-    frase = random.choice(texto)
-    return frase.capitalize()
+    def _frase_sorteio(self):
+        """Retorna uma frase de sorteio"""
+        frases = ['escolha', 'jogue de', 'vai jogar de', 'pegue', 'jogue com']
+        return random.choice(frases).capitalize()
 
 async def setup(bot):
     print("🔧 Carregando Sorteio...")

@@ -54,8 +54,6 @@ async def main():
     print("🚀 Iniciando Bot Cobrão...")
     
     async with bot:
-    # (VoiceManager removido)
-        
         await load_cogs()
         print("📦 Todas as extensões carregadas!")
         await bot.start(DISCORD_TOKEN)

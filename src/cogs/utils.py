@@ -5,8 +5,10 @@ import discord
 from discord.ext import commands
 import random
 import datetime
+import asyncio
 import aiohttp
 from config.settings import EMBED_COLORS
+from src.utils.helpers import send_temp_message
 
 class UtilityCommands(commands.Cog):
     """Comandos utilitários e ferramentas"""
@@ -46,7 +48,7 @@ class UtilityCommands(commands.Cog):
                 description="Digite um número entre 1 e 100",
                 color=EMBED_COLORS['error']
             )
-            await ctx.send(embed=embed)
+            await send_temp_message(ctx, embed, 6)
             return
 
         try:
@@ -58,8 +60,7 @@ class UtilityCommands(commands.Cog):
                 color=EMBED_COLORS['success']
             )
 
-            msg = await ctx.send(embed=embed)
-            await msg.delete(delay=3)  # Auto-deletar após 3 segundos
+            msg = await ctx.send(embed=embed, delete_after=4)  # Auto-deletar após 4 segundos
 
         except discord.Forbidden:
             embed = discord.Embed(
@@ -67,7 +68,7 @@ class UtilityCommands(commands.Cog):
                 description="Não tenho permissão para deletar mensagens",
                 color=EMBED_COLORS['error']
             )
-            await ctx.send(embed=embed)
+            await send_temp_message(ctx, embed, 8)
 
     @commands.command(name='calcular', aliases=['calc', 'math'])
     async def calculate(self, ctx, *, expression: str):
@@ -97,7 +98,7 @@ class UtilityCommands(commands.Cog):
                 description="Expressão inválida. Use apenas números e operadores básicos (+, -, *, /, ())",
                 color=EMBED_COLORS['error']
             )
-            await ctx.send(embed=embed)
+            await send_temp_message(ctx, embed, 8)
 
     @commands.command(name='8ball', aliases=['bola8', 'pergunta'])
     async def eight_ball(self, ctx, *, question: str = None):
@@ -165,7 +166,7 @@ class UtilityCommands(commands.Cog):
                 description="O dado deve ter entre 2 e 100 lados",
                 color=EMBED_COLORS['error']
             )
-            await ctx.send(embed=embed)
+            await send_temp_message(ctx, embed, 6)
             return
 
         result = random.randint(1, sides)
@@ -208,7 +209,7 @@ class UtilityCommands(commands.Cog):
                 description="Escolha entre: pedra, papel ou tesoura",
                 color=EMBED_COLORS['error']
             )
-            await ctx.send(embed=embed)
+            await send_temp_message(ctx, embed, 6)
             return
 
         bot_choice = random.choice(list(choices.keys()))
@@ -414,7 +415,7 @@ class UtilityCommands(commands.Cog):
                             description=f"Não foi possível encontrar informações para '{city}'",
                             color=EMBED_COLORS['error']
                         )
-                        await ctx.send(embed=embed)
+                        await send_temp_message(ctx, embed, 8)
 
         except Exception as e:
             embed = discord.Embed(
@@ -422,7 +423,7 @@ class UtilityCommands(commands.Cog):
                 description="Não foi possível consultar o tempo no momento.",
                 color=EMBED_COLORS['error']
             )
-            await ctx.send(embed=embed)
+            await send_temp_message(ctx, embed, 8)
 
     @commands.command(name='traduzir', aliases=['translate', 'trad'])
     async def translate_text(self, ctx, lang: str = None, *, text: str = None):
@@ -452,7 +453,7 @@ class UtilityCommands(commands.Cog):
                 description=f"Idioma '{lang}' não é suportado.\nUse um dos idiomas listados em `c.traduzir`",
                 color=EMBED_COLORS['error']
             )
-            await ctx.send(embed=embed)
+            await send_temp_message(ctx, embed, 8)
             return
 
         # Traduções simples (básicas)
@@ -559,7 +560,7 @@ class UtilityCommands(commands.Cog):
                 description="Forneça pelo menos 2 opções separadas por vírgula",
                 color=EMBED_COLORS['error']
             )
-            await ctx.send(embed=embed)
+            await send_temp_message(ctx, embed, 6)
             return
 
         chosen = random.choice(choices)
@@ -613,7 +614,7 @@ class UtilityCommands(commands.Cog):
                 description="Mencione um usuário para avisar!\n\nExemplo: `c.warn @usuario Spam no chat`",
                 color=EMBED_COLORS['error']
             )
-            await ctx.send(embed=embed)
+            await send_temp_message(ctx, embed, 8)
             return
 
         if member == ctx.author:
@@ -622,7 +623,7 @@ class UtilityCommands(commands.Cog):
                 description="Você não pode se avisar!",
                 color=EMBED_COLORS['error']
             )
-            await ctx.send(embed=embed)
+            await send_temp_message(ctx, embed, 6)
             return
 
         if member.top_role >= ctx.author.top_role:
@@ -631,7 +632,7 @@ class UtilityCommands(commands.Cog):
                 description="Você não pode avisar alguém com cargo igual ou superior ao seu!",
                 color=EMBED_COLORS['error']
             )
-            await ctx.send(embed=embed)
+            await send_temp_message(ctx, embed, 8)
             return
 
         embed = discord.Embed(
@@ -671,7 +672,7 @@ class UtilityCommands(commands.Cog):
                 description="Mencione um usuário para expulsar!\n\nExemplo: `c.kick @usuario Spam excessivo`",
                 color=EMBED_COLORS['error']
             )
-            await ctx.send(embed=embed)
+            await send_temp_message(ctx, embed, 8)
             return
 
         if member == ctx.author:
@@ -680,7 +681,7 @@ class UtilityCommands(commands.Cog):
                 description="Você não pode se expulsar!",
                 color=EMBED_COLORS['error']
             )
-            await ctx.send(embed=embed)
+            await send_temp_message(ctx, embed, 6)
             return
 
         if member.top_role >= ctx.author.top_role:
@@ -689,7 +690,7 @@ class UtilityCommands(commands.Cog):
                 description="Você não pode expulsar alguém com cargo igual ou superior ao seu!",
                 color=EMBED_COLORS['error']
             )
-            await ctx.send(embed=embed)
+            await send_temp_message(ctx, embed, 8)
             return
 
         try:
@@ -726,7 +727,7 @@ class UtilityCommands(commands.Cog):
                 description="Não tenho permissão para expulsar este usuário.",
                 color=EMBED_COLORS['error']
             )
-            await ctx.send(embed=embed)
+            await send_temp_message(ctx, embed, 8)
 
     @commands.command(name='ban', aliases=['banir'])
     @commands.has_permissions(ban_members=True)
@@ -738,7 +739,7 @@ class UtilityCommands(commands.Cog):
                 description="Mencione um usuário para banir!\n\nExemplo: `c.ban @usuario Violação das regras`",
                 color=EMBED_COLORS['error']
             )
-            await ctx.send(embed=embed)
+            await send_temp_message(ctx, embed, 8)
             return
 
         if member == ctx.author:
@@ -747,7 +748,7 @@ class UtilityCommands(commands.Cog):
                 description="Você não pode se banir!",
                 color=EMBED_COLORS['error']
             )
-            await ctx.send(embed=embed)
+            await send_temp_message(ctx, embed, 6)
             return
 
         if member.top_role >= ctx.author.top_role:
@@ -756,7 +757,7 @@ class UtilityCommands(commands.Cog):
                 description="Você não pode banir alguém com cargo igual ou superior ao seu!",
                 color=EMBED_COLORS['error']
             )
-            await ctx.send(embed=embed)
+            await send_temp_message(ctx, embed, 8)
             return
 
         try:
@@ -794,7 +795,7 @@ class UtilityCommands(commands.Cog):
                 description="Não tenho permissão para banir este usuário.",
                 color=EMBED_COLORS['error']
             )
-            await ctx.send(embed=embed)
+            await send_temp_message(ctx, embed, 8)
 
     @commands.command(name='unban', aliases=['desbanir'])
     @commands.has_permissions(ban_members=True)
@@ -806,7 +807,7 @@ class UtilityCommands(commands.Cog):
                 description="Forneça o ID do usuário para desbanir!\n\nExemplo: `c.unban 123456789012345678`",
                 color=EMBED_COLORS['error']
             )
-            await ctx.send(embed=embed)
+            await send_temp_message(ctx, embed, 8)
             return
 
         try:
@@ -832,7 +833,7 @@ class UtilityCommands(commands.Cog):
                     description="Este usuário não está banido neste servidor.",
                     color=EMBED_COLORS['error']
                 )
-                await ctx.send(embed=embed)
+                await send_temp_message(ctx, embed, 8)
 
         except ValueError:
             embed = discord.Embed(
@@ -840,14 +841,14 @@ class UtilityCommands(commands.Cog):
                 description="Forneça um ID numérico válido!",
                 color=EMBED_COLORS['error']
             )
-            await ctx.send(embed=embed)
+            await send_temp_message(ctx, embed, 6)
         except discord.NotFound:
             embed = discord.Embed(
                 title="❌ Usuário Não Encontrado",
                 description="Usuário com este ID não existe.",
                 color=EMBED_COLORS['error']
             )
-            await ctx.send(embed=embed)
+            await send_temp_message(ctx, embed, 8)
 
     @commands.command(name='mute', aliases=['silenciar'])
     @commands.has_permissions(moderate_members=True)
@@ -859,7 +860,7 @@ class UtilityCommands(commands.Cog):
                 description="Mencione um usuário para silenciar!\n\nExemplo: `c.mute @usuario 1h Spam`",
                 color=EMBED_COLORS['error']
             )
-            await ctx.send(embed=embed)
+            await send_temp_message(ctx, embed, 8)
             return
 
         if member == ctx.author:
@@ -868,7 +869,7 @@ class UtilityCommands(commands.Cog):
                 description="Você não pode se silenciar!",
                 color=EMBED_COLORS['error']
             )
-            await ctx.send(embed=embed)
+            await send_temp_message(ctx, embed, 6)
             return
 
         if member.top_role >= ctx.author.top_role:
@@ -877,7 +878,7 @@ class UtilityCommands(commands.Cog):
                 description="Você não pode silenciar alguém com cargo igual ou superior ao seu!",
                 color=EMBED_COLORS['error']
             )
-            await ctx.send(embed=embed)
+            await send_temp_message(ctx, embed, 8)
             return
 
         # Parse duration
@@ -927,7 +928,7 @@ class UtilityCommands(commands.Cog):
                 description="Não tenho permissão para silenciar este usuário.",
                 color=EMBED_COLORS['error']
             )
-            await ctx.send(embed=embed)
+            await send_temp_message(ctx, embed, 8)
 
     @commands.command(name='unmute', aliases=['desilenciar'])
     @commands.has_permissions(moderate_members=True)
@@ -939,7 +940,7 @@ class UtilityCommands(commands.Cog):
                 description="Mencione um usuário para desilenciar!\n\nExemplo: `c.unmute @usuario Comportamento melhorado`",
                 color=EMBED_COLORS['error']
             )
-            await ctx.send(embed=embed)
+            await send_temp_message(ctx, embed, 8)
             return
 
         try:
@@ -962,7 +963,242 @@ class UtilityCommands(commands.Cog):
                 description="Não tenho permissão para desilenciar este usuário.",
                 color=EMBED_COLORS['error']
             )
+            await send_temp_message(ctx, embed, 8)
+
+    @commands.command(name='curiosidade', aliases=['fato', 'fact'])
+    async def random_fact(self, ctx):
+        """Mostra uma curiosidade interessante"""
+        facts = [
+            "🐙 Os polvos têm três corações e sangue azul!",
+            "🦈 Tubarões existem há mais tempo que as árvores na Terra!",
+            "🌍 Um dia em Vênus é mais longo que um ano venusiano!",
+            "🧠 Seu cérebro usa cerca de 20% de toda energia do seu corpo!",
+            "🐋 O coração de uma baleia azul é do tamanho de um carro pequeno!",
+            "🌙 A Lua está se afastando da Terra cerca de 3,8cm por ano!",
+            "🐧 Pinguins podem pular até 3 metros de altura!",
+            "🍯 O mel nunca estraga - foi encontrado mel comestível em tumbas egípcias!",
+            "🦒 Girafas só precisam dormir 2 horas por dia!",
+            "⚡ Um raio é 5 vezes mais quente que a superfície do Sol!",
+            "🐨 Coalas dormem até 22 horas por dia!",
+            "🌊 Conhecemos apenas 5% dos oceanos da Terra!",
+            "🦎 Lagartixas podem andar no teto devido a milhões de pelos microscópicos!",
+            "🍌 Bananas são radioativas (mas é seguro comer)!",
+            "🐢 Tartarugas podem respirar pelo ânus!"
+        ]
+        
+        fact = random.choice(facts)
+        
+        embed = discord.Embed(
+            title="🤯 Curiosidade do Dia",
+            description=fact,
+            color=EMBED_COLORS['info']
+        )
+        embed.set_footer(text="Você sabia? Use c.curiosidade para mais!")
+        
+        await ctx.send(embed=embed)
+
+    @commands.command(name='motivacao', aliases=['motivation', 'inspire'])
+    async def motivational_quote(self, ctx):
+        """Envia uma frase motivacional"""
+        quotes = [
+            "💪 'O sucesso é a soma de pequenos esforços repetidos dia após dia.'",
+            "🌟 'Acredite em si mesmo e tudo será possível!'",
+            "🚀 'O único limite é aquele que você coloca na sua mente.'",
+            "🎯 'Grandes realizações requerem grandes ambições.'",
+            "🌈 'Depois da tempestade, sempre vem o arco-íris.'",
+            "⚡ 'Você é mais forte do que imagina!'",
+            "🏔️ 'O topo da montanha está esperando por você!'",
+            "💎 'Pressão faz diamantes, continue brilhando!'",
+            "🦅 'Voe alto como uma águia, não ande como um pato!'",
+            "🌱 'Todo grande carvalho já foi uma pequena semente.'",
+            "🔥 'Seja o fogo que ilumina, não a fumaça que cega!'",
+            "⭐ 'Você nasceu para ser uma estrela, não uma pedra!'",
+            "🎪 'A vida é um circo, seja o malabarista dos seus sonhos!'",
+            "🚂 'Seja o condutor do trem da sua vida!'",
+            "🎨 'Pinte sua vida com as cores mais vibrantes!'"
+        ]
+        
+        quote = random.choice(quotes)
+        
+        embed = discord.Embed(
+            title="✨ Motivação Diária",
+            description=quote,
+            color=EMBED_COLORS['success']
+        )
+        embed.set_footer(text="Você consegue! 💪")
+        
+        await ctx.send(embed=embed)
+
+    @commands.command(name='timer', aliases=['alarme', 'lembrete'])
+    async def set_timer(self, ctx, duration: str = None, *, message: str = "Tempo esgotado!"):
+        """Define um timer/alarme (ex: c.timer 5m estudar)"""
+        if not duration:
+            embed = discord.Embed(
+                title="⏰ Timer/Alarme",
+                description="Use: `c.timer <tempo> [mensagem]`\n\n**Exemplos:**\n• `c.timer 30s` - 30 segundos\n• `c.timer 5m estudar` - 5 minutos\n• `c.timer 1h reunião` - 1 hora",
+                color=EMBED_COLORS['info']
+            )
             await ctx.send(embed=embed)
+            return
+
+        # Parse duration
+        import re
+        match = re.match(r'^(\d+)([smh])$', duration.lower())
+        if not match:
+            embed = discord.Embed(
+                title="❌ Formato Inválido",
+                description="Use: 30s (segundos), 5m (minutos), 1h (horas)",
+                color=EMBED_COLORS['error']
+            )
+            await send_temp_message(ctx, embed, 6)
+            return
+
+        value, unit = match.groups()
+        value = int(value)
+        
+        if unit == 's':
+            seconds = value
+            time_str = f"{value} segundo{'s' if value != 1 else ''}"
+        elif unit == 'm':
+            seconds = value * 60
+            time_str = f"{value} minuto{'s' if value != 1 else ''}"
+        elif unit == 'h':
+            seconds = value * 3600
+            time_str = f"{value} hora{'s' if value != 1 else ''}"
+
+        if seconds > 3600:  # Limite de 1 hora
+            embed = discord.Embed(
+                title="❌ Tempo Muito Longo",
+                description="Máximo permitido: 1 hora",
+                color=EMBED_COLORS['error']
+            )
+            await send_temp_message(ctx, embed, 6)
+            return
+
+        # Confirmar timer
+        embed = discord.Embed(
+            title="⏰ Timer Ativado",
+            description=f"Timer de **{time_str}** definido!\n\nMensagem: *{message}*",
+            color=EMBED_COLORS['success']
+        )
+        embed.set_footer(text=f"Solicitado por {ctx.author.name}")
+        
+        await ctx.send(embed=embed)
+
+        # Aguardar e enviar lembrete
+        await asyncio.sleep(seconds)
+        
+        embed = discord.Embed(
+            title="⏰ Timer Finalizado!",
+            description=f"{ctx.author.mention} **{message}**",
+            color=EMBED_COLORS['warning']
+        )
+        embed.set_footer(text=f"Timer de {time_str} finalizado")
+        
+        await ctx.send(embed=embed)
+
+    @commands.command(name='numero', aliases=['numsorteio', 'random'])
+    async def random_number(self, ctx, min_num: int = 1, max_num: int = 100):
+        """Sorteia um número entre dois valores"""
+        if min_num >= max_num:
+            embed = discord.Embed(
+                title="❌ Valores Inválidos",
+                description="O número mínimo deve ser menor que o máximo!",
+                color=EMBED_COLORS['error']
+            )
+            await send_temp_message(ctx, embed, 6)
+            return
+
+        if max_num - min_num > 1000000:
+            embed = discord.Embed(
+                title="❌ Range Muito Grande",
+                description="Diferença máxima permitida: 1.000.000",
+                color=EMBED_COLORS['error']
+            )
+            await send_temp_message(ctx, embed, 6)
+            return
+
+        result = random.randint(min_num, max_num)
+        
+        embed = discord.Embed(
+            title="🎲 Número Sorteado",
+            description=f"Entre **{min_num}** e **{max_num}**\n\n🎯 Resultado: **{result}**",
+            color=EMBED_COLORS['success']
+        )
+        
+        await ctx.send(embed=embed)
+
+    @commands.command(name='futuro', aliases=['previsao', 'destino'])
+    async def predict_future(self, ctx, *, question: str = None):
+        """Prevê o futuro de forma divertida"""
+        if not question:
+            embed = discord.Embed(
+                title="🔮 Previsão do Futuro",
+                description="Faça uma pergunta sobre seu futuro!\n\nExemplo: `c.futuro vou ser rico?`",
+                color=EMBED_COLORS['info']
+            )
+            await ctx.send(embed=embed)
+            return
+
+        predictions = [
+            "🌟 Seu futuro brilha mais que mil sóis!",
+            "💰 Riqueza e prosperidade te aguardam!",
+            "❤️ O amor verdadeiro está chegando!",
+            "🎓 Muito conhecimento virá até você!",
+            "🏆 Grandes conquistas te esperam!",
+            "🌍 Você vai viajar para lugares incríveis!",
+            "🎨 Sua criatividade será reconhecida!",
+            "👑 Você será líder em algo importante!",
+            "🌈 Dias felizes estão por vir!",
+            "⚡ Uma grande oportunidade aparecerá em breve!",
+            "🎪 Aventuras emocionantes te aguardam!",
+            "🔥 Sua paixão mudará o mundo!",
+            "🚀 Você alcançará as estrelas!",
+            "💎 Você descobrirá um talento escondido!",
+            "🎵 A música da felicidade tocará em sua vida!"
+        ]
+        
+        prediction = random.choice(predictions)
+        
+        embed = discord.Embed(
+            title="🔮 Visão do Futuro",
+            color=EMBED_COLORS['info']
+        )
+        embed.add_field(name="❓ Sua pergunta:", value=question, inline=False)
+        embed.add_field(name="✨ Previsão:", value=prediction, inline=False)
+        embed.set_footer(text="O futuro é o que você faz dele! 🌟")
+        
+        await ctx.send(embed=embed)
+
+    @commands.command(name='emoji', aliases=['emojirandom'])
+    async def random_emoji(self, ctx):
+        """Envia um emoji aleatório divertido"""
+        emojis = [
+            "🎉", "🚀", "🌟", "⚡", "🔥", "💎", "🎨", "🎪", "🎭", "🎯",
+            "🦄", "🐙", "🦋", "🌈", "🍕", "🍦", "🎂", "🍭", "🎈", "🎁",
+            "👑", "🏆", "🎖️", "💯", "💫", "✨", "🌙", "☀️", "🌸", "🌺",
+            "🎵", "🎶", "🎸", "🥳", "😎", "🤩", "🥰", "😋", "🤖", "👾"
+        ]
+        
+        emoji = random.choice(emojis)
+        
+        messages = [
+            f"Aqui está seu emoji da sorte: {emoji}",
+            f"O emoji do momento é: {emoji}",
+            f"Emoji especial para você: {emoji}",
+            f"Seu emoji mágico: {emoji}",
+            f"Emoji da felicidade: {emoji}"
+        ]
+        
+        message = random.choice(messages)
+        
+        embed = discord.Embed(
+            title="🎲 Emoji Aleatório",
+            description=message,
+            color=EMBED_COLORS['success']
+        )
+        
+        await ctx.send(embed=embed)
 
 async def setup(bot):
     print("🔧 Carregando UtilityCommands...")
