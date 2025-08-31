@@ -38,6 +38,9 @@ async def load_cogs():
         'src.cogs.utils',     # Utilitários (ping, clear, calc)
         'src.cogs.games',     # Jogos e sorteios
         'src.cogs.sitegen',   # Geração e exclusão de sites via IA
+        'src.cogs.entertainment_ai', # Novos jogos com IA
+        'src.cogs.admin_ai', # Novos comandos de admin com IA
+        'src.cogs.music', # Comandos de música
     ]
 
     for cog in cogs_to_load:

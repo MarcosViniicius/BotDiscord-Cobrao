@@ -4,6 +4,9 @@ FROM python:3.11-slim
 # Diretório de trabalho
 WORKDIR /app
 
+# Instala ffmpeg para funcionalidade de música
+RUN apt-get update && apt-get install -y ffmpeg
+
 # Instala dependências
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
