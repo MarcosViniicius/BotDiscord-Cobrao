@@ -50,7 +50,16 @@ class SiteGen(commands.Cog):
         self.openai_client = OpenAI(api_key=OPENAI_API_KEY)
         if not os.path.exists(SITES_DIR):
             os.makedirs(SITES_DIR)
-        self.start_webserver()
+        # Verifica se o webserver já está rodando (ex: no Docker)
+        import socket
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        result = sock.connect_ex(('127.0.0.1', 8000))
+        sock.close()
+        if result != 0:
+            # Porta não está em uso, inicia o webserver
+            self.start_webserver()
+        else:
+            print("Webserver já está rodando (provavelmente no Docker)")
 
     @commands.command(name='criarsite')
     async def criar_site(self, ctx, *, pedido: str = None):

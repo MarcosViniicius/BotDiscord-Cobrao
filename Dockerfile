@@ -11,8 +11,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copia o restante do projeto
 COPY . .
 
+# Torna o entrypoint executável
+RUN chmod +x entrypoint.sh
+
 # Variáveis de ambiente (pode ser sobrescrito pelo docker-compose)
 ENV PYTHONUNBUFFERED=1
 
-# Comando para iniciar o bot
-CMD ["python", "main.py"]
+# Comando para iniciar o bot e webserver
+ENTRYPOINT ["./entrypoint.sh"]
