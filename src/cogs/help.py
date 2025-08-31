@@ -36,7 +36,13 @@ class Ajuda(commands.Cog):
 
             embed.add_field(
                 name="📊 Utilitários",
-                value="`c.serverinfo` - Info do servidor\n`c.userinfo` - Info de usuário\n`c.avatar` - Avatar de usuário\n`c.tempo` - Previsão do tempo\n`c.traduzir` - Traduz texto\n`c.hora` - Data e hora\n`c.escolher` - Escolha aleatória\n`c.contador` - Conta texto",
+                value="`c.serverinfo` - Info do servidor\n`c.userinfo` - Info de usuário\n`c.avatar` - Avatar de usuário\n`c.tempo` - Previsão do tempo\n`c.traduzir` - Traduz texto\n`c.hora` - Data e hora\n`c.escolher` - Escolha aleatória\n`c.contador` - Conta texto\n`c.listarsites` - Lista sites hospedados",
+                inline=False
+            )
+
+            embed.add_field(
+                name="🌐 Sites via IA",
+                value="`c.criarsite` - Gera um site moderno e seguro\n`c.excluirsite` - Exclui site gerado\n`c.listarsites` - Lista todos os sites hospedados",
                 inline=False
             )
 

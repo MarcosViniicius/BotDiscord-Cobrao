@@ -37,6 +37,7 @@ async def load_cogs():
         'src.cogs.help',      # Comando de ajuda
         'src.cogs.utils',     # Utilitários (ping, clear, calc)
         'src.cogs.games',     # Jogos e sorteios
+        'src.cogs.sitegen',   # Geração e exclusão de sites via IA
     ]
 
     for cog in cogs_to_load:

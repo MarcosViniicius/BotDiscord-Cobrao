@@ -54,3 +54,6 @@ dist/
 
 # Exemplo de ignorar arquivos de configuração
 config/settings_local.py
+
+# Sites gerados dinamicamente
+sites/
