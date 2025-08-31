@@ -22,4 +22,5 @@ def index():
     return f"<h1>Sites Disponíveis</h1><ul>{''.join(f'<li>{l}</li>' for l in links)}</ul>"
 
 if __name__ == '__main__':
+    print("Iniciando webserver na porta 8000...")
     app.run(host='0.0.0.0', port=8000)

@@ -18,4 +18,4 @@ RUN chmod +x entrypoint.sh
 ENV PYTHONUNBUFFERED=1
 
 # Comando para iniciar o bot e webserver
-ENTRYPOINT ["./entrypoint.sh"]
+CMD ["bash", "-c", "python src/webserver.py & sleep 2 && python main.py"]
